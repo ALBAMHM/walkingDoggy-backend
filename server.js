@@ -6,11 +6,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-    origin: 'https://walkingdoggy-frontend.onrender.com', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI, {

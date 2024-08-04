@@ -1,12 +1,10 @@
 const Pet = require('../models/Pet');
 
-// Crear una nueva mascota
 exports.createPet = async (req, res) => {
   const { name, species, breed, age, size, personality, preferences, photo_url } = req.body;
-
   try {
-    // Crear una nueva mascota
     const newPet = new Pet({
+      user_id: req.user,
       name,
       species,
       breed,
@@ -16,7 +14,6 @@ exports.createPet = async (req, res) => {
       preferences,
       photo_url,
     });
-
     await newPet.save();
     res.status(201).json(newPet);
   } catch (error) {
@@ -24,32 +21,20 @@ exports.createPet = async (req, res) => {
   }
 };
 
-// Obtener mascotas del usuario autenticado
 exports.getPets = async (req, res) => {
   try {
-    const pets = await Pet.find();
+    const pets = await Pet.find({ user_id: req.user });
     res.json(pets);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Obtener todas las mascotas con información del propietario
 exports.getAllPets = async (req, res) => {
-  try {
-    const pets = await Pet.find();
-    res.json(pets);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// Obtener todas las mascotas con información del propietario
-exports.getAllPets = async (req, res) => {
-  try {
-    const pets = await Pet.find().populate('owner', 'email location'); 
-    res.json(pets);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    try {
+      const pets = await Pet.find().populate('owner', 'email location'); 
+      res.json(pets);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
