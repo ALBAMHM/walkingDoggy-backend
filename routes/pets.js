@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', auth, createPet);
 router.get('/', auth, getPets);
-router.get('/all-pets', getAllPets);
+router.get('/all-pets', auth, getAllPets);
 
 
 module.exports = router;
